@@ -1045,9 +1045,15 @@ function renderPanel(projId) {
     if (students.length === 0) return '';
     const rows = students.map(s => {
       const dc = degClass(s.degree);
+      const crownHtml = s.colead === 'Yes'
+        ? '<span title="Co-lead: Yes" style="font-size:9px;flex-shrink:0">👑</span>'
+        : s.colead === 'Not sure yet'
+        ? '<span title="Co-lead: Maybe" style="font-size:9px;flex-shrink:0;opacity:0.4">👑</span>'
+        : '';
       return `<div class="ref-row">
         <span style="width:5px;height:5px;border-radius:50%;background:${tier.color};flex-shrink:0;display:inline-block"></span>
         <span class="ref-name">${s.first} ${s.last}</span>
+        ${crownHtml}
         <span class="ref-deg deg-pill ${dc}">${s.degree}</span>
       </div>`;
     }).join('');
