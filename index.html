@@ -611,7 +611,8 @@
   </div>
   <div class="leg-group">
     <div class="leg-items">
-      <div class="leg-item">👑 Co-lead interest</div>
+      <div class="leg-item"><svg width="11" height="11" viewBox="0 0 24 24" fill="#F59E0B"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg> Co-lead (confirmed)</div>
+      <div class="leg-item"><svg width="11" height="11" viewBox="0 0 24 24" fill="#F59E0B" style="opacity:0.35"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg> Co-lead (maybe)</div>
     </div>
   </div>
 </div>
@@ -736,6 +737,8 @@ function renderCard(student, projId) {
   const dc = degClass(student.degree);
   const pip = prefPipClass(student.id, projId);
   const hasCoLead = student.colead === 'Yes';
+  const maybeLead = student.colead === 'Not sure yet';
+  const starSvg = (op) => `<svg width="10" height="10" viewBox="0 0 24 24" fill="#F59E0B" style="flex-shrink:0;opacity:${op}" title="Co-lead: ${student.colead}"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`;
   return `
     <div class="card" draggable="true" data-id="${student.id}"
          onmousedown="handleMouseDown(event)"
@@ -751,7 +754,7 @@ function renderCard(student, projId) {
       <div class="card-bottom">
         <span class="card-school">${student.school}</span>
         <div class="card-right">
-          ${hasCoLead ? '<span class="crown" title="Co-lead interest">👑</span>' : ''}
+          ${hasCoLead ? starSvg(1) : maybeLead ? starSvg(0.35) : ''}
           <span class="deg-pill ${dc}">${student.degree}</span>
         </div>
       </div>
@@ -1045,15 +1048,15 @@ function renderPanel(projId) {
     if (students.length === 0) return '';
     const rows = students.map(s => {
       const dc = degClass(s.degree);
-      const crownHtml = s.colead === 'Yes'
-        ? '<span title="Co-lead: Yes" style="font-size:9px;flex-shrink:0">👑</span>'
+      const starHtml = s.colead === 'Yes'
+        ? `<svg width="9" height="9" viewBox="0 0 24 24" fill="#F59E0B" style="flex-shrink:0" title="Co-lead: Yes"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`
         : s.colead === 'Not sure yet'
-        ? '<span title="Co-lead: Maybe" style="font-size:9px;flex-shrink:0;opacity:0.4">👑</span>'
+        ? `<svg width="9" height="9" viewBox="0 0 24 24" fill="#F59E0B" style="flex-shrink:0;opacity:0.35" title="Co-lead: Maybe"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`
         : '';
       return `<div class="ref-row">
         <span style="width:5px;height:5px;border-radius:50%;background:${tier.color};flex-shrink:0;display:inline-block"></span>
         <span class="ref-name">${s.first} ${s.last}</span>
-        ${crownHtml}
+        ${starHtml}
         <span class="ref-deg deg-pill ${dc}">${s.degree}</span>
       </div>`;
     }).join('');
