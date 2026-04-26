@@ -366,16 +366,17 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
-  .pref-pip {
-    width: 7px; height: 7px;
-    border-radius: 50%;
+  .pref-badge-card {
+    font-size: 8.5px;
+    font-weight: 700;
+    padding: 1.5px 5px;
+    border-radius: 4px;
+    background: #E9EFE6;
+    color: var(--text-2);
+    white-space: nowrap;
     flex-shrink: 0;
-    margin-top: 3px;
+    letter-spacing: 0.01em;
   }
-  .pref-pip.pp1 { background: var(--p1c); }
-  .pref-pip.pp2 { background: var(--p2c); }
-  .pref-pip.pp3 { background: var(--p3c); }
-  .pref-pip.ppno { background: var(--pnc); }
 
   .card-bottom {
     display: flex;
@@ -593,10 +594,10 @@
   <div class="leg-group">
     <span class="leg-label">Pref match</span>
     <div class="leg-items">
-      <div class="leg-item"><div class="leg-dot" style="background:var(--p1c)"></div>1st choice</div>
-      <div class="leg-item"><div class="leg-dot" style="background:var(--p2c)"></div>2nd choice</div>
-      <div class="leg-item"><div class="leg-dot" style="background:var(--p3c)"></div>3rd choice</div>
-      <div class="leg-item"><div class="leg-dot" style="background:var(--pnc)"></div>Not in prefs</div>
+      <div class="leg-item"><span class="pref-badge-card">1st</span> 1st choice</div>
+      <div class="leg-item"><span class="pref-badge-card">2nd</span> 2nd choice</div>
+      <div class="leg-item"><span class="pref-badge-card">3rd</span> 3rd choice</div>
+      <div class="leg-item"><span class="pref-badge-card">—</span> Not in prefs</div>
     </div>
   </div>
   <div class="leg-group">
@@ -684,10 +685,10 @@ function degClass(deg) {
   return 'MPA';
 }
 
-function prefPipClass(studentId, projectId) {
+function prefBadgeText(studentId, projectId) {
   const s = STUDENTS.find(x => x.id === studentId);
   const idx = s.prefs.indexOf(projectId);
-  return idx === 0 ? 'pp1' : idx === 1 ? 'pp2' : idx === 2 ? 'pp3' : 'ppno';
+  return idx === 0 ? '1st' : idx === 1 ? '2nd' : idx === 2 ? '3rd' : '—';
 }
 
 function prefLabel(studentId, projectId) {
@@ -735,7 +736,7 @@ function getDegBreakdown(projId) {
 
 function renderCard(student, projId) {
   const dc = degClass(student.degree);
-  const pip = prefPipClass(student.id, projId);
+  const badge = prefBadgeText(student.id, projId);
   const hasCoLead = student.colead === 'Yes';
   const maybeLead = student.colead === 'Not sure yet';
   const starSvg = (op) => `<svg width="10" height="10" viewBox="0 0 24 24" fill="#F59E0B" style="flex-shrink:0;opacity:${op}" title="Co-lead: ${student.colead}"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`;
@@ -749,7 +750,7 @@ function renderCard(student, projId) {
          ondragleave="onCardDragLeave(event, ${student.id})">
       <div class="card-top">
         <span class="card-name">${student.first} ${student.last}</span>
-        <span class="pref-pip ${pip}" title="${prefLabel(student.id, projId)}"></span>
+        <span class="pref-badge-card" title="${prefLabel(student.id, projId)}">${badge}</span>
       </div>
       <div class="card-bottom">
         <span class="card-school">${student.school}</span>
