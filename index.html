@@ -594,10 +594,10 @@
   <div class="leg-group">
     <span class="leg-label">Pref match</span>
     <div class="leg-items">
-      <div class="leg-item"><span class="pref-badge-card">1st</span> 1st choice</div>
-      <div class="leg-item"><span class="pref-badge-card">2nd</span> 2nd choice</div>
-      <div class="leg-item"><span class="pref-badge-card">3rd</span> 3rd choice</div>
-      <div class="leg-item"><span class="pref-badge-card">—</span> Not in prefs</div>
+      <div class="leg-item"><span class="pref-badge-card">1st Pref</span> 1st choice</div>
+      <div class="leg-item"><span class="pref-badge-card">2nd Pref</span> 2nd choice</div>
+      <div class="leg-item"><span class="pref-badge-card">3rd Pref</span> 3rd choice</div>
+      <div class="leg-item"><span class="pref-badge-card">Not in Prefs</span> Not in prefs</div>
     </div>
   </div>
   <div class="leg-group">
@@ -688,7 +688,7 @@ function degClass(deg) {
 function prefBadgeText(studentId, projectId) {
   const s = STUDENTS.find(x => x.id === studentId);
   const idx = s.prefs.indexOf(projectId);
-  return idx === 0 ? '1st' : idx === 1 ? '2nd' : idx === 2 ? '3rd' : '—';
+  return idx === 0 ? '1st Pref' : idx === 1 ? '2nd Pref' : idx === 2 ? '3rd Pref' : 'Not in Prefs';
 }
 
 function prefLabel(studentId, projectId) {
