@@ -617,7 +617,9 @@
     <div class="ver-switcher">
       <button class="btn-ver" id="btn-v1" onclick="loadVersion(1)">Version 1</button>
       <div class="ver-divider"></div>
-      <button class="btn-ver active" id="btn-v2" onclick="loadVersion(2)">Version 2</button>
+      <button class="btn-ver" id="btn-v2" onclick="loadVersion(2)">Version 2</button>
+      <div class="ver-divider"></div>
+      <button class="btn-ver active" id="btn-v3" onclick="loadVersion(3)">Version 3</button>
     </div>
   </div>
 </header>
@@ -741,7 +743,8 @@ function initState() {
   state = {};
   state[0] = [];
   PROJECTS.forEach(p => state[p.id] = []);
-  STUDENTS.forEach(s => state[s.assigned].push(s.id));
+  const map = VERSION_3;
+  STUDENTS.forEach(s => state[map[s.id]].push(s.id));
 }
 
 function getColumnStudents(projId) {
@@ -1081,11 +1084,18 @@ const VERSION_2 = {
   31:1, 32:1
 };
 
-let activeVersion = 2;
+const VERSION_3 = {
+  1:2, 2:2, 3:2, 4:2, 5:2, 6:1, 7:1, 8:5, 9:5, 10:5,
+  11:3, 12:4, 13:5, 14:2, 15:3, 16:4, 17:3, 18:3, 19:4, 20:4,
+  21:5, 22:1, 23:1, 24:3, 25:1, 26:1, 27:4, 28:3, 29:5, 30:4,
+  31:1, 32:2
+};
+
+let activeVersion = 3;
 
 function loadVersion(v) {
   activeVersion = v;
-  const map = v === 1 ? VERSION_1 : VERSION_2;
+  const map = v === 1 ? VERSION_1 : v === 2 ? VERSION_2 : VERSION_3;
   state = {};
   state[0] = [];
   PROJECTS.forEach(p => state[p.id] = []);
@@ -1093,6 +1103,7 @@ function loadVersion(v) {
   renderBoard();
   document.getElementById('btn-v1').classList.toggle('active', v === 1);
   document.getElementById('btn-v2').classList.toggle('active', v === 2);
+  document.getElementById('btn-v3').classList.toggle('active', v === 3);
 }
 
 // ─── REFERENCE PANEL ───
