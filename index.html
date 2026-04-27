@@ -80,6 +80,38 @@
     letter-spacing: 0.01em;
   }
   .btn-reset:hover { background: rgba(218,235,193,0.18); }
+  .ver-switcher {
+    display: flex;
+    align-items: center;
+    background: rgba(0,0,0,0.25);
+    border: 1px solid rgba(218,235,193,0.18);
+    border-radius: 8px;
+    padding: 3px;
+    gap: 2px;
+  }
+  .btn-ver {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px; font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 0.02em;
+    color: rgba(218,235,193,0.45);
+    background: transparent;
+  }
+  .btn-ver:hover { color: var(--sage); background: rgba(218,235,193,0.1); }
+  .btn-ver.active {
+    background: var(--med-green);
+    color: var(--sage);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+  }
+  .ver-divider {
+    width: 1px; height: 14px;
+    background: rgba(218,235,193,0.15);
+    flex-shrink: 0;
+  }
 
   /* ─── BOARD ─── */
   .board {
@@ -582,7 +614,11 @@
   <div class="h-right">
     <span class="h-stat" id="stat-assigned"><strong>32</strong> / 32 assigned</span>
     <span class="h-stat" id="stat-pref1">—</span>
-    <button class="btn-reset" onclick="resetToProposed()">↺ Reset to Proposed</button>
+    <div class="ver-switcher">
+      <button class="btn-ver" id="btn-v1" onclick="loadVersion(1)">Version 1</button>
+      <div class="ver-divider"></div>
+      <button class="btn-ver active" id="btn-v2" onclick="loadVersion(2)">Version 2</button>
+    </div>
   </div>
 </header>
 
@@ -637,26 +673,26 @@ const PROJECTS = [
 const STUDENTS = [
   { id:1,  first:"Ryan",           last:"Rastegar",       school:"UChicago",      degree:"MPP",     prefs:[2,1,3], colead:"Yes",          moderator:"No",  linkedin:"https://www.linkedin.com/in/ryanrastegar",                   assigned:2 },
   { id:2,  first:"Vladimir",       last:"Abdelnour",      school:"Arizona State", degree:"PhD",     prefs:[2,1,3], colead:"Yes",          moderator:"Yes", linkedin:"https://www.linkedin.com/in/vladimir-abdelnour/",             assigned:2 },
-  { id:3,  first:"Mitchell",       last:"Breitbart",      school:"Harvard",       degree:"MBA",     prefs:[1,2,3], colead:"Not sure yet", moderator:"No",  linkedin:"https://www.linkedin.com/in/mitchell-breitbart-90074755",    assigned:1 },
-  { id:4,  first:"Elana",          last:"Fortson",        school:"Harvard",       degree:"MBA",     prefs:[2,3,1], colead:"No",           moderator:"No",  linkedin:"https://www.linkedin.com/in/elana-fortson/",                 assigned:2 },
-  { id:5,  first:"Young",          last:"Ko",             school:"MIT",           degree:"PhD",     prefs:[1,2,3], colead:"Yes",          moderator:"No",  linkedin:"https://www.linkedin.com/in/young-ko-488811190/",            assigned:1 },
-  { id:6,  first:"Corson",         last:"Chao",           school:"MIT",           degree:"PhD",     prefs:[3,1,2], colead:"No",           moderator:"No",  linkedin:"https://www.linkedin.com/in/corson-chao/",                   assigned:3 },
+  { id:3,  first:"Mitchell",       last:"Breitbart",      school:"Harvard",       degree:"MBA",     prefs:[1,2,3], colead:"Not sure yet", moderator:"No",  linkedin:"https://www.linkedin.com/in/mitchell-breitbart-90074755",    assigned:2 },
+  { id:4,  first:"Elana",          last:"Fortson",        school:"Harvard",       degree:"MBA",     prefs:[2,3,1], colead:"No",           moderator:"No",  linkedin:"https://www.linkedin.com/in/elana-fortson/",                 assigned:3 },
+  { id:5,  first:"Young",          last:"Ko",             school:"MIT",           degree:"PhD",     prefs:[1,2,3], colead:"Yes",          moderator:"No",  linkedin:"https://www.linkedin.com/in/young-ko-488811190/",            assigned:2 },
+  { id:6,  first:"Corson",         last:"Chao",           school:"MIT",           degree:"PhD",     prefs:[3,1,2], colead:"No",           moderator:"No",  linkedin:"https://www.linkedin.com/in/corson-chao/",                   assigned:1 },
   { id:7,  first:"Keerthi",        last:"Medicherla",     school:"Harvard",       degree:"MBA",     prefs:[1,2,3], colead:"No",           moderator:"No",  linkedin:"https://www.linkedin.com/in/keerthi-medicherla-237767169/",  assigned:1 },
   { id:8,  first:"Natalie",        last:"Chung",          school:"Princeton",     degree:"PhD",     prefs:[1,5,2], colead:"Not sure yet", moderator:"Yes", linkedin:"https://www.linkedin.com/in/chungsumyue/",                   assigned:5 },
-  { id:9,  first:"Subhechchha",    last:"Paul",           school:"Stanford",      degree:"PhD",     prefs:[4,5,3], colead:"No",           moderator:"No",  linkedin:"https://www.linkedin.com/in/subh23",                         assigned:4 },
+  { id:9,  first:"Subhechchha",    last:"Paul",           school:"Stanford",      degree:"PhD",     prefs:[4,5,3], colead:"No",           moderator:"No",  linkedin:"https://www.linkedin.com/in/subh23",                         assigned:5 },
   { id:10, first:"Yasmin",         last:"Afshar",         school:"Arizona State", degree:"PhD",     prefs:[1,5,2], colead:"Not sure yet", moderator:"No",  linkedin:"https://www.linkedin.com/in/yasminafshar/",                  assigned:5 },
   { id:11, first:"Audrey",         last:"McManemin",      school:"Stanford",      degree:"PhD",     prefs:[3,1,4], colead:"Not sure yet", moderator:"Yes", linkedin:"https://www.linkedin.com/in/amcmanemin",                     assigned:3 },
   { id:12, first:"Kira",           last:"Smiley",         school:"Harvard",       degree:"MBA",     prefs:[4,1,3], colead:"Not sure yet", moderator:"Yes", linkedin:"https://www.linkedin.com/in/kira-smiley-global/",            assigned:4 },
   { id:13, first:"Guilherme",      last:"Fasolin",        school:"Vanderbilt",    degree:"PhD",     prefs:[5,4,3], colead:"No",           moderator:"No",  linkedin:"https://www.linkedin.com/in/guilherme-fasolin-30a1938b",     assigned:5 },
   { id:14, first:"Harshvardhan",   last:"Sanghi",         school:"Harvard",       degree:"MBA/MS",  prefs:[2,3,1], colead:"Yes",          moderator:"Yes", linkedin:"https://www.linkedin.com/in/harshvardhan-sanghi/",           assigned:2 },
-  { id:15, first:"Isabelle",       last:"Callaghan",      school:"MIT",           degree:"MBA",     prefs:[3,4,5], colead:"No",           moderator:"Yes", linkedin:"https://www.linkedin.com/in/isabelle-callaghan-a809b1138/", assigned:5 },
-  { id:16, first:"Mohammed",       last:"Aldossary",      school:"Harvard",       degree:"MBA",     prefs:[3,4,2], colead:"Yes",          moderator:"Yes", linkedin:null,                                                         assigned:3 },
+  { id:15, first:"Isabelle",       last:"Callaghan",      school:"MIT",           degree:"MBA",     prefs:[3,4,5], colead:"No",           moderator:"Yes", linkedin:"https://www.linkedin.com/in/isabelle-callaghan-a809b1138/", assigned:3 },
+  { id:16, first:"Mohammed",       last:"Aldossary",      school:"Harvard",       degree:"MBA",     prefs:[3,4,2], colead:"Yes",          moderator:"Yes", linkedin:null,                                                         assigned:4 },
   { id:17, first:"Yirui",          last:"Gui",            school:"Columbia",      degree:"MPA",     prefs:[3,1,2], colead:"Yes",          moderator:"Yes", linkedin:"https://www.linkedin.com/in/yirui-gui/",                     assigned:3 },
   { id:18, first:"Mofopefoluwa",   last:"Ajani",          school:"Stanford",      degree:"PhD",     prefs:[3,2,1], colead:"Yes",          moderator:"No",  linkedin:"https://www.linkedin.com/in/mofopea-ajani/",                assigned:3 },
   { id:19, first:"Bright",         last:"Odike",          school:"Texas A&M",     degree:"PhD",     prefs:[3,4,1], colead:"Yes",          moderator:"Yes", linkedin:"https://www.linkedin.com/in/brighteyindahodike",             assigned:4 },
   { id:20, first:"Dylan",          last:"Cooper",         school:"Rice",          degree:"MBA",     prefs:[4,1,3], colead:"Yes",          moderator:"Yes", linkedin:"https://www.linkedin.com/in/r-dylan-cooper-a0934627/",       assigned:4 },
   { id:21, first:"Sylvia",         last:"Ebenbach",       school:"Northwestern",  degree:"JD/MBA",  prefs:[3,1,5], colead:"Not sure yet", moderator:"Yes", linkedin:"https://www.linkedin.com/in/sylviaebenbach/",                assigned:5 },
-  { id:22, first:"Helena",         last:"Epstein",        school:"Berkeley",      degree:"MBA",     prefs:[1,2,3], colead:"Yes",          moderator:"Yes", linkedin:"https://www.linkedin.com/in/helenaepstein",                  assigned:1 },
+  { id:22, first:"Helena",         last:"Epstein",        school:"Berkeley",      degree:"MBA",     prefs:[1,2,3], colead:"Yes",          moderator:"Yes", linkedin:"https://www.linkedin.com/in/helenaepstein",                  assigned:2 },
   { id:23, first:"Aarav",          last:"Seth",           school:"Stanford",      degree:"MS",      prefs:[1,2,3], colead:"Yes",          moderator:"Yes", linkedin:"https://www.linkedin.com/in/aaravseth/",                     assigned:1 },
   { id:24, first:"Dimitrios",      last:"Voulanas",       school:"Texas A&M",     degree:"PhD",     prefs:[3,2,1], colead:"Yes",          moderator:"No",  linkedin:"https://www.linkedin.com/in/dimitrios-voulanas-8b0740134",  assigned:3 },
   { id:25, first:"Hari Krishna",   last:"Parthasarathy",  school:"Arizona State", degree:"PhD",     prefs:[1,2,3], colead:"Not sure yet", moderator:"No",  linkedin:"https://www.linkedin.com/in/hkaparthas/",                   assigned:1 },
@@ -665,8 +701,8 @@ const STUDENTS = [
   { id:28, first:"Ken",            last:"Taylor",         school:"Michigan",      degree:"MBA",     prefs:[3,1,2], colead:"Yes",          moderator:"Yes", linkedin:"https://www.linkedin.com/in/ken-taylor-5i/",                 assigned:3 },
   { id:29, first:"Tyler",          last:"Mangini",        school:"Harvard",       degree:"MBA/MS",  prefs:[1,2,5], colead:"No",           moderator:"No",  linkedin:"https://www.linkedin.com/in/tyler-mangini/",                 assigned:5 },
   { id:30, first:"Aria",           last:"Kovalovich",     school:"Columbia",      degree:"MPA",     prefs:[2,1,4], colead:"Yes",          moderator:"Yes", linkedin:"https://www.linkedin.com/in/ariakov/",                       assigned:4 },
-  { id:31, first:"Ka Ying",        last:"Wong",           school:"Columbia",      degree:"MPA",     prefs:[1,2,3], colead:"Yes",          moderator:"Yes", linkedin:"https://www.linkedin.com/in/christy-wong-122204190/",        assigned:2 },
-  { id:32, first:"Zara",           last:"Inam",           school:"MIT",           degree:"MBA",     prefs:[1,2,3], colead:"Not sure yet", moderator:"No",  linkedin:"https://www.linkedin.com/in/zarainam/",                      assigned:2 },
+  { id:31, first:"Ka Ying",        last:"Wong",           school:"Columbia",      degree:"MPA",     prefs:[1,2,3], colead:"Yes",          moderator:"Yes", linkedin:"https://www.linkedin.com/in/christy-wong-122204190/",        assigned:1 },
+  { id:32, first:"Zara",           last:"Inam",           school:"MIT",           degree:"MBA",     prefs:[1,2,3], colead:"Not sure yet", moderator:"No",  linkedin:"https://www.linkedin.com/in/zarainam/",                      assigned:1 },
 ];
 
 // Current state: projectId → Array of studentIds (order matters)
@@ -1031,9 +1067,32 @@ function closeModal(e) {
   document.getElementById('overlay').classList.remove('open');
 }
 
-function resetToProposed() {
-  initState();
+// ─── VERSION MAPS ───
+const VERSION_1 = {
+  1:2, 2:2, 3:1, 4:2, 5:1, 6:3, 7:1, 8:5, 9:4, 10:5,
+  11:3, 12:4, 13:5, 14:2, 15:5, 16:3, 17:3, 18:3, 19:4, 20:4,
+  21:5, 22:1, 23:1, 24:3, 25:1, 26:1, 27:4, 28:3, 29:5, 30:4,
+  31:2, 32:2
+};
+const VERSION_2 = {
+  1:2, 2:2, 3:2, 4:3, 5:2, 6:1, 7:1, 8:5, 9:5, 10:5,
+  11:3, 12:4, 13:5, 14:2, 15:3, 16:4, 17:3, 18:3, 19:4, 20:4,
+  21:5, 22:2, 23:1, 24:3, 25:1, 26:1, 27:4, 28:3, 29:5, 30:4,
+  31:1, 32:1
+};
+
+let activeVersion = 2;
+
+function loadVersion(v) {
+  activeVersion = v;
+  const map = v === 1 ? VERSION_1 : VERSION_2;
+  state = {};
+  state[0] = [];
+  PROJECTS.forEach(p => state[p.id] = []);
+  STUDENTS.forEach(s => state[map[s.id]].push(s.id));
   renderBoard();
+  document.getElementById('btn-v1').classList.toggle('active', v === 1);
+  document.getElementById('btn-v2').classList.toggle('active', v === 2);
 }
 
 // ─── REFERENCE PANEL ───
